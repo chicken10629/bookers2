@@ -1,0 +1,28 @@
+<header>
+home about signin signup
+home users books logout
+</header>
+
+<navbar>
+<h2>user info</h2>
+<p><%= user.get_image =></p>
+<p><%= user.name  => </p>
+<p><%= user.introduction</p>
+<p><%= link_to create_user_path %></p>
+#クリエイトは必ず自分のid、表示ユーザーidはusers/showから取ってくる
+<h2>New book</h2>
+<% form_with model:book |f| do %>
+  <h4>title</h4>
+  <%= f.text_field :title =>
+  <h4>Opinion</h4>
+  <%= f.text_area :body =>
+  <%= f.submit 'Create Book' %>
+
+</navbar>
+
+<footer>
+<h4>Right Infratop.inc</h4>
+</footer>
+#before_actionで必要なインスタンス変数を取ってきて、こちらでローカル変数に変換
+#ユーザー
+#userとbookの中身は@user = User.find(params[:id])と@book = Book.new
