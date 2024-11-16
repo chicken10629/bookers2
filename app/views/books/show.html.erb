@@ -1,0 +1,8 @@
+<%= render './users/list', user: @user , book: @book %>
+  <%= @books.title %>
+  <%= @books.body %>
+  <% if @books.user_id == current_user.id %>
+    <%= link_to "edit", edit_book_path(@books.id) %>
+    <%= link_to "destroy", book_path(@books.id), method: :delete, "data-confirm" => "OK?" %>
+  <% end %>
+  
