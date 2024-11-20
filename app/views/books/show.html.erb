@@ -1,8 +1,15 @@
-<%= render './users/list', user: @user , book: @book %>
-  <%= @books.title %>
-  <%= @books.body %>
-  <% if @books.user_id == current_user.id %>
-    <%= link_to "edit", edit_book_path(@books.id) %>
-    <%= link_to "destroy", book_path(@books.id), method: :delete, "data-confirm" => "OK?" %>
+<%= flash[:notice] %>
+<%= render './users/list', user: @user_temp , book: @book_temp %>
+  <%= link_to user_path(@book_posted.user.id) do %>
+    <div class="user-profile">
+      <%= image_tag(@book_posted.user.get_profile_image) %>
+      <p><%= @book_posted.user.name %></p>
+    </div>
+  <% end %>
+  <%= @book_posted.title %>
+  <%= @book_posted.body %>
+  <% if @book_posted.user_id == current_user.id %>
+    <%= link_to "edit", edit_book_path(@book_posted.id) %>
+    <%= link_to "destroy", book_path(@book_posted.id), method: :delete, "data-confirm" => "本当に消しますか?" %>
   <% end %>
   

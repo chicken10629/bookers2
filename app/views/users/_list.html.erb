@@ -1,38 +1,67 @@
 
+<!-- 部分テンプレートを使うページ
+users/index
+users/show
+books/index
+books/show
+-->
+    <div class="col col-md-3  ">
+      <nav>
+        <h2>User info</h2>
+        <%= image_tag user.get_profile_image %>
+        <%# image_tag指定しないと単なる画像ファイルのお名前になってしまう 
+        renderすると定義されていないメソッドにされてしまう　なぜ%>
+        <table class="table">
+          <tr>
+            <th>Name</th> 
+            <th><%= user.name %></th>
+          </tr>
+          <tr>
+            <td>Introduction</td>
+            <td><%= user.introduction %></td>
+          </tr>
+        </table>
+        <!-- 別ユーザーの詳細ページからアクセスした場合、current_userの詳細へ移動させたい
+        @book_temp = bookの中身はあらかじめcurrent_user.idが入ってしまっているので
+        どうにかbook.user_idをセットしたい。
+        いつもコントローラー側で使用するアクションごとに１個１個設定し直していることを考慮するべき
+        @user_temp = @books.userだったので、これをセット
+        -->
+        <!-- createアクションでデータをやり取りしているのは@book_tempではなく@book -->
+        <% if @book.errors.any? %>
+        <div class="error_messages">
+          <ul>
+          <% @book.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %> 
+        <p>
+          <% if user.id == current_user.id %>
+            <%= link_to edit_user_path(current_user.id), class: 'btn' do %>
+              <i class="fa-solid fa-user-gear"></i>
+            <% end %>
+          <% else %>
+            <%= link_to user_path(current_user.id), class: 'btn' do %>
+              <i class="fa-solid fa-user-gear"></i>
+            <% end %>
+          <% end %>
+        </p>
+        <%# クリエイトは必ず自分のid、表示ユーザーidはusers/showから取ってくる %>
+        <div class="col col-sm-10 col-lg-8 col-xl-3">
+          <h2>New book</h2>
+          <!-- titleをbodyの横幅に合わせる　ここの要素を中央ぞろえにする -->
+          <%= form_with model: book, local: true do |f| %>
+            <p>title</p>
+            <%= f.text_field :title %>
+            <p>Opinion</p>
+            <%= f.text_area :body %>
+            <%= f.submit 'Create Book', class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+    <%# before_actionで必要なインスタンス変数を取ってきて、こちらでローカル変数に変換 %>
 
-<nav>
-<% if @book.errors.any? %>
-  <div class="error_messages">
-    <ul>
-     <% @book.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-     <% end %>
-    </ul>
-  </div>
-<% end %>
-<h2>user info</h2>
-<%# あとで画像取得を作る <p><%= user.get_image %></p>
-<p>Name</p> 
-<p><%= user.name %></p>
-<p>Introduction</p>
-<p><%= user.introduction %></p>
-<p>
-  <% if book.user_id == current_user.id %>
-    <%= link_to 'edit', edit_user_path(user.id) %>
-  <% else %>
-    <%= link_to 'edit', user_path(current_user.id) %>
-  <% end %>
-</p>
-<%# クリエイトは必ず自分のid、表示ユーザーidはusers/showから取ってくる %>
-<h2>New book</h2>
-<%= form_with model: book, local: true do |f| %>
-  <h4>title</h4>
-  <%= f.text_field :title %>
-  <h4>Opinion</h4>
-  <%= f.text_area :body %>
-  <%= f.submit 'Create Book' %>
-<% end %>
-</nav>
-<%# before_actionで必要なインスタンス変数を取ってきて、こちらでローカル変数に変換 %>
-
-<%# userとbookの中身は@user = User.find(params[:id])と@book = Book.new %>
+    <%# userとbookの中身は@user = User.find(params[:id])と@book = Book.new %>

@@ -1,33 +1,55 @@
 class BooksController < ApplicationController
-  def new
-    @books = Book.new
-  end
-
   def create
-    @books = Book.new(book_params)
-    @books.user_id =current_user.id
-    if @books.save
-      redirect_to book_path(@books.id)
+    @book = Book.new(book_params)
+    @book.user_id = current_user.id
+    if @book.save
+      flash[:notice] = "You have created book successfully."
+      redirect_to book_path(@book.id)
     else
-      render books_path
+      #indexで使ってるやつを全部セットしなおす。
+      @user_temp = current_user
+      @book_temp = Book.new(user_id: current_user.id)
+      @book_all = Book.all
+      render :index
+      #renderは基本的にファイル名、つまりアクションしか指定できない。pathは不可
     end
   end
 
-  def show
-    @books = Book.find(params[:id])
-    @user = @books.user_id
+  def index
+    @book = Book.new #エラー文用
+    @user_temp = current_user
+    @book_temp = Book.new(user_id: current_user.id)
+    @book_all = Book.all
   end
 
-  def index
-    @user = current_user
-    @book = Book.new
-    @books = Book.all
+  def show
+    @book = Book.new #エラー文用
+    @book_temp = Book.new(user_id: current_user.id)
+    @book_posted = Book.find(params[:id])
+    @user_temp = @book_posted.user
+  end
+
+  def edit
+    @book_posted = Book.find(params[:id])
+    if @book_posted.user_id != current_user.id
+      redirect_to user_path(current_user.id)
+    end
+  end
+
+  def update
+    book = Book.find(params[:id])
+   if book.update(book_params)
+      flash[:notice] = "You have updated book successfully."
+      redirect_to book_path(book.id)
+   else
+      render edit_book_path(book.id)
+   end
   end
 
   def destroy
-    @books = Book.find(params[:id])
-    @books.destroy
-    redirect_to users_path
+    @book_posted = Book.find(params[:id])
+    @book_posted.destroy
+    redirect_to books_path
   end
 
   private

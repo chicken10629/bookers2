@@ -1,27 +1,32 @@
-<h2>Log in</h2>
+<div class="container">
+  <div class="row">
+   <div class="col col-sm-12 col-lg-8 col-xl-6">
+    <h2>Log in</h2>
+<!-- container⇒row⇒中の縦要素をcolで分割。一列なら一つのcolで全部覆う。フレキシブル対応のため、sm⇒xlの順に、数字はとりあえず大⇒小にして設定 真ん中配置ならmx-auto -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.label :name %><br>
+        <%= f.text_field :name %>
+      </div>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+      <div class="field">
+        <%= f.label :password %><br />
+        <%= f.password_field :password, autocomplete: "current-password" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="field">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Log in" , class: 'btn-primary border border-primary rounded' %>
+      </div>
+    <% end %>
+    <%= render "devise/shared/links" %>
+   </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
