@@ -1,19 +1,25 @@
-<h1>User info</h1>
-<% if @user.errors.any? %>
-<div class="error_messages">
-  <ul>
-  <% @user.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-  <% end %>
-  </ul>
+<div class="container">
+  <div class="row">
+    <div class="col col-sm-12 col-md-8 col-lg-6 mx-auto">
+      <h1 class="mt-3">User info</h1>
+      <% if @user.errors.any? %>
+      <div class="error_messages">
+        <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+      <% end %>
+      <%= form_with model: @user do |f| %>
+        <label for="inputName">Name</label>
+        <p><%= f.text_field :name, autofocus: true, id:"inputName", placefolder:"名前", class: "w-100" %><p>
+        <label for="inputImage">image</label>
+        <p><%= f.file_field :profile_image, placefolder: "プロフィール画像", accept: "image/*" %></p>
+        <label for="inputIntroduction">Introduction</label>
+        <p><%= f.text_area :introduction, placefolder:"自己紹介" %></p>
+        <p><%= f.submit "Update User", class: "btn btn-success" %></p>
+      <% end %>
+    </div>
+  </div>
 </div>
-<% end %>
-<%= form_with model: @user do |f| %>
-  <label for="inputName">Name</label>
-  <p><%= f.text_field :name, autofocus: true, id:"inputName", placefolder:"名前" %><p>
-  <label for="inputImage">image</label>
-  <p><%= f.file_field :profile_image, placefolder: "プロフィール画像", accept: "image/*" %></p>
-  <label for="inputIntroduction">Introduction</label>
-  <p><%= f.text_area :introduction, placefolder:"自己紹介" %></p>
-  <p><%= f.submit "Update User" %></p>
-<% end %>

@@ -4,13 +4,14 @@ users/index
 users/show
 books/index
 books/show
--->
-    <div class="col col-md-3  ">
+渡すインスタンス変数
+--> 
+    <div class="col-sm-12 col-md-3 my-3">
       <nav>
         <h2>User info</h2>
         <%= image_tag user.get_profile_image %>
         <%# image_tag指定しないと単なる画像ファイルのお名前になってしまう 
-        renderすると定義されていないメソッドにされてしまう　なぜ%>
+        renderするとインスタンス変数をセットしなおさないと定義されていないメソッドにされてしまう%>
         <table class="table">
           <tr>
             <th>Name</th> 
@@ -28,38 +29,24 @@ books/show
         @user_temp = @books.userだったので、これをセット
         -->
         <!-- createアクションでデータをやり取りしているのは@book_tempではなく@book -->
-        <% if @book.errors.any? %>
-        <div class="error_messages">
-          <ul>
-          <% @book.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-          </ul>
-        </div>
-      <% end %> 
+
         <p>
-          <% if user.id == current_user.id %>
-            <%= link_to edit_user_path(current_user.id), class: 'btn' do %>
+            <%= link_to edit_user_path(@user_temp.id), class: 'btn btn-outline-secondary btn-block' do %>
               <i class="fa-solid fa-user-gear"></i>
             <% end %>
-          <% else %>
-            <%= link_to user_path(current_user.id), class: 'btn' do %>
-              <i class="fa-solid fa-user-gear"></i>
-            <% end %>
-          <% end %>
         </p>
         <%# クリエイトは必ず自分のid、表示ユーザーidはusers/showから取ってくる %>
-        <div class="col col-sm-10 col-lg-8 col-xl-3">
+
           <h2>New book</h2>
-          <!-- titleをbodyの横幅に合わせる　ここの要素を中央ぞろえにする -->
+          <!-- titleをbodyの横幅に合わせる ここの要素を中央ぞろえにする -->
           <%= form_with model: book, local: true do |f| %>
             <p>title</p>
-            <%= f.text_field :title %>
+            <%= f.text_field :title, class: "w-100" %>
             <p>Opinion</p>
-            <%= f.text_area :body %>
-            <%= f.submit 'Create Book', class: "btn btn-primary" %>
+            <%= f.text_area :body, class: "w-100" %>
+            <%= f.submit 'Create Book', class: "btn btn-success mt-3" %>
           <% end %>
-        </div>
+
       </nav>
     </div>
     <%# before_actionで必要なインスタンス変数を取ってきて、こちらでローカル変数に変換 %>

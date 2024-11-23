@@ -30,19 +30,21 @@ class BooksController < ApplicationController
   end
 
   def edit
+    @book = Book.new #エラー文用
     @book_posted = Book.find(params[:id])
     if @book_posted.user_id != current_user.id
-      redirect_to user_path(current_user.id)
+      redirect_to books_path
     end
   end
 
   def update
-    book = Book.find(params[:id])
-   if book.update(book_params)
+    @book = Book.find(params[:id])
+   if @book.update(book_params)
       flash[:notice] = "You have updated book successfully."
-      redirect_to book_path(book.id)
+      redirect_to book_path(@book.id)
    else
-      render edit_book_path(book.id)
+      @book_posted = Book.find(params[:id]) #入れなおさないとShowやBackのリンク先idが取得できない
+      render :edit
    end
   end
 
